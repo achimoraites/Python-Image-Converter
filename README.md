@@ -6,6 +6,10 @@ CRW , PEF , ORF , CR2 , MRW .
 The app is using PIL , you simply put the convert.py in the folder you want to convert set the options 
 and the app will convert all the selected files to jpeg . I wrote this app to convert multiple image files
 as fast as possible.
+## What files can be used
+The app supports many image formats , except .raw files! </br>
+Personally i convert a lot of .psd , .TIF and .dng files !!! </br>
+also you can use it to create thubnails fast , if you have tons of files!
 ### Before you can use it Install Image
 
 </br> pip install Image 
