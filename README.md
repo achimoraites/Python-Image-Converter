@@ -21,7 +21,8 @@ fileExtension = '.IIQ' </br>
 The extension sould be set to the filetype of images to be converted </br>
 in line 19 you will find : </br>
 basewidth = 2048 </br>
-Change it to set the image size , though the 2048px is great if you want a thumpnail you can set it to 200 and the proportions are automatically calculated!
+Change it to set the image size ,
+if you want a thumbnail you can set it to 200 and the proportions are automatically calculated!</br>
 save your changes !!!
 
 
