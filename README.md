@@ -9,7 +9,7 @@ as fast as possible.
 ## What files can be used
 The app supports many image formats , except .raw files! </br>
 Personally i convert a lot of .psd , .TIF and .dng files !!! </br>
-also you can use it to create thubnails fast , if you have tons of files!
+also you can use it to create thumbnails fast , if you have tons of files!
 ### Before you can use it Install Image
 
 </br> pip install Image 
