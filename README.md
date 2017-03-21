@@ -9,9 +9,9 @@ as fast as possible.
 The .psd files are converted to .jpeg format!!! </br>
 
 
-## What files can be used
+# What files can be used
 The app supports many image formats , EVEN RAW files! </br>
-# DNG , CR2 , NEF , ERF , ORF , PPM , MOS , MRF , MRW and more!!!
+### DNG , CR2 , NEF , ERF , ORF , PPM , MOS , MRF , MRW and more!!!
 Personally i convert a lot of .psd , .TIF and .dng files !!! </br>
 ### Before you can use it Install Image
 
