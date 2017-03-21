@@ -1,4 +1,4 @@
-# Python-Image-Converter
+# Python Image Converter
 
 
 ## This is a simple Image converter written in Python
