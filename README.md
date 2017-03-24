@@ -39,5 +39,5 @@ The application will create a folder 'converted' where all your converted images
 And you are done! 
 
 ## ScreenShot
-<img src='img/sample.png' alt='Python Image Converter'>
+<img src='app/img/sample.png' alt='Python Image Converter'>
 
