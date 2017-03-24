@@ -138,9 +138,9 @@ def main():
 					if file.endswith('.tif'):
 						t = Thread(target = convert_file, args = (file,directory,tgtDir))
 						t.start();
-		print "Converted Images are stored at - > \n " + os.path.abspath(directory)
+		print " \n Converted Images are stored at - > \n " + os.path.abspath(directory)
 	except:
-		print " The directory at : \n " + tgtDir + "  \n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! Grrrr....\n\n"			
+		print "\n The directory at : \n " + tgtDir + "  \n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! Grrrr....\n\n"			
 					
 				
 
