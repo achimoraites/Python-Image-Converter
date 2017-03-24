@@ -3,7 +3,7 @@
 
 ## This is a simple Image converter written in Python
 The app is using PIL ,rawpy and imageio . 
-Files are converted to .jpg format
+Files are converted to .jpg format 
 
 ## Convert for FREE multiple image files
 I saw all kinds of software out there but when you have hundrends of raw images is tedious to convert 
