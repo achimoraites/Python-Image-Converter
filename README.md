@@ -13,7 +13,7 @@ The .ai files are renamed as .pdf and moved to the converted directory !!!
 
 
 # What files can be used ?
-### DNG , CR2 , CRW, NEF , PEF, ERF , ORF , PPM , MOS , MRF , MRW and more!!!
+### DNG , CR2 , CRW, NEF , PEF, ERF , ORF , PPM , MOS , MRF , MRW , SRW and more!!!
 Personally i convert a lot of .psd , .TIF and .dng files !!! 
 ## Speed
 This script is multithreaded and checks if you have already converted an image!
@@ -38,4 +38,6 @@ The application will create a folder 'converted' where all your converted images
 
 And you are done! 
 
+## ScreenShot
+<img src='img/sample.png' alt='Python Image Converter'>
 
