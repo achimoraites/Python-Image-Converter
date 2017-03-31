@@ -11,9 +11,6 @@ import optparse
 # Keeping the output cleaned 
 screenLock = Semaphore(value=1)
 
-#set target directory
-tgtDir = os.path.abspath('C:\Users\Toula\Desktop\Achilles\_Development\\test')
-
 # where to save our images
 directory = "converted"
 # create a message function
@@ -26,11 +23,11 @@ def message(file,bool):
 		print datetime.now().time().strftime('%H:%M:%S') + " Converting:  "+ file
 	screenLock.release()
 
-# create a directory if needed to store our converted images
+# create a directory if needed to store our converted images!
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-# convert RAW function
+# convert RAW images function
 def convert_raw(file,directory,tgtDir):
 	#path = 'image.nef'
 	
