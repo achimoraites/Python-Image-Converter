@@ -1,5 +1,5 @@
 # Python Image Converter
-
+## This application is designed to run with Python 2.7
 
 ## This is a simple Image converter written in Python
 The app is using PIL ,rawpy and imageio . 
