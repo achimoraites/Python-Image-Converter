@@ -34,7 +34,7 @@ if not os.path.exists(directory):
 
 
 # convert RAW images function
-def convert_raw(file, directory, tgtDir):
+def convert_raw(file, directory, tgtDir, extension=".jpg"):
     # path = 'image.nef'
 
     try:
@@ -42,17 +42,7 @@ def convert_raw(file, directory, tgtDir):
         path = os.path.join(tgtDir, file)
         with rawpy.imread(path) as raw:
             rgb = raw.postprocess()
-        imageio.imsave(os.path.join(directory, file + '.jpg'), rgb)
-        message(file, True)
-    except:
-        pass
-
-    try:
-        message(file, False)
-        path = os.path.join(tgtDir, file)
-        with rawpy.imread(path) as raw:
-            rgb = raw.postprocess()
-        imageio.imsave(os.path.join(directory, file + '.png'), rgb)
+        imageio.imsave(os.path.join(directory, file + extension), rgb)
         message(file, True)
     except:
         pass
@@ -119,14 +109,17 @@ def main():
 
     parser = optparse.OptionParser("usage: " + sys.argv[0] + \
                                    "\n-s <source directory> \n ex: usage%prog -s C:\\Users\\USerName\\Desktop\\Photos_Dir \n After -s Specify the directory you will convert")
-    parser.add_option('-s', dest='nname', type='string', \
+    parser.add_option('--s', dest='nname', type='string', \
                       help='specify your source directory!')
+    parser.add_option('--ext', dest='target_image_extension', type='choice', \
+                      default=".jpg", choices = ['.jpg', '.png'], help='the image format to be used for the converted images.')
     (options, args) = parser.parse_args()
     if (options.nname == None):
         print(parser.usage)
         exit(0)
     else:
         tgtDir = os.path.abspath(options.nname)
+
 
     print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
     print("Converting \n -> " + tgtDir + " Directory !\n")
@@ -138,7 +131,7 @@ def main():
             if image_not_exists(file):
                 if 'RAW' == checkExtension(file):
                     # Added multithreds to complete conversion faster
-                    t2 = Thread(target=convert_raw, args=(file, directory, tgtDir))
+                    t2 = Thread(target=convert_raw, args=(file, directory, tgtDir, options.target_image_extension))
                     t2.start();
 
                 if 'NOT_RAW' == checkExtension(file):

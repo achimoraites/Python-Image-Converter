@@ -1,5 +1,4 @@
 # Python Image Converter
-## This application is designed to run with Python 2.7
 
 ## This is a simple Image converter written in Python
 The app is using PIL ,rawpy and imageio . 
@@ -17,12 +16,10 @@ The .ai files are renamed as .pdf and moved to the converted directory !!!
 Personally i convert a lot of .psd , .TIF and .dng files !!! 
 ## Speed
 This script is multithreaded and checks if you have already converted an image!
+
 ### Before you can use it Install :
-```
- pip install Image 
- pip install rawpy
- pip install imageio 
- 
+```python
+ pip install Pillow rawpy imageio
 ```
 ### Example usage
 
@@ -30,14 +27,22 @@ This script is multithreaded and checks if you have already converted an image!
  git clone https://github.com/Cyb3rN4u7/Python-Image-Converter.git [my-app-name]
  cd [my-app-name]
  cd app
- python convert.py -s <Enter-Path-Of-Directory>
+ 
+ # simple usage
+ python convert.py --s <Enter-Path-Of-Directory>
+
+ # set a custom target image format
+ python convert.py --s <Enter-Path-Of-Directory> --ext '.png'
 ```
-* The -s argument is where you set the path to the directory you want to convert! 
+- The --s argument is where you set the path to the directory you want to convert! 
+- The --ext argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
+    - `.jpg`
+    - `.png`
 
 The application will create a folder 'converted' where all your converted images are located!
 
 And you are done! 
 
 ## ScreenShot
-<img src='app/img/sample.png' alt='Python Image Converter'>
+<img src='sample.png' alt='Python Image Converter'>
 
