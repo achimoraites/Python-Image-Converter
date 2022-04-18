@@ -16,23 +16,17 @@ The .ai files are renamed as .pdf and moved to the converted directory !!!
 Personally i convert a lot of .psd , .TIF and .dng files !!! 
 ## Speed
 This script is multithreaded and checks if you have already converted an image!
-
-### Before you can use it Install :
-```python
- pip install Pillow rawpy imageio
-```
 ### Example usage
 
 ```
  git clone https://github.com/Cyb3rN4u7/Python-Image-Converter.git [my-app-name]
  cd [my-app-name]
- cd app
  
  # simple usage
- python convert.py --s <Enter-Path-Of-Directory>
+ python raw_image_converter --s <Enter-Path-Of-Directory>
 
  # set a custom target image format
- python convert.py --s <Enter-Path-Of-Directory> --ext '.png'
+ python raw_image_converter --s <Enter-Path-Of-Directory> --ext '.png'
 ```
 - The --s argument is where you set the path to the directory you want to convert! 
 - The --ext argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
