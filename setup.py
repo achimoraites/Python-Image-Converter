@@ -24,9 +24,10 @@ setup(
         "Programming Language :: Python :: 3.8",
         'Topic :: Utilities',
     ],
+    keywords='cli, converter, raw, images',
     packages=["raw_image_converter"],
-    include_package_data=True,
-    install_requires=["rawpy", "imageio", "Pillow"],
+    install_requires=["numpy==1.22.3", "rawpy==0.17.1",
+                      "imageio==2.16.2", "Pillow==9.1.0"],
     entry_points={
         "console_scripts": [
             "raw_image_converter=raw_image_converter.__main__:main",
