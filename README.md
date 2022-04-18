@@ -17,22 +17,32 @@ Personally i convert a lot of .psd , .TIF and .dng files !!!
 ## Speed
 This script is multithreaded and checks if you have already converted an image!
 
-### Before you can use it Install :
-```python
- pip install Pillow rawpy imageio
+## Install
+
+### Using pip (recommended)
+```bash
+$ pip3 install raw_image_converter
 ```
-### Example usage
+
+### Running it from the repo
+In that case using an virtual environment is recommended
+
+```bash
+ git clone https://github.com/achimoraites/Python-Image-Converter.git [my-app-name]
+ cd [my-app-name]
+
+ pip install -r requirements.txt
+
+ raw_image_converter --s <Enter-Path-Of-Directory>
+```
+## Example usage
 
 ```
- git clone https://github.com/Cyb3rN4u7/Python-Image-Converter.git [my-app-name]
- cd [my-app-name]
- cd app
- 
  # simple usage
- python convert.py --s <Enter-Path-Of-Directory>
+ raw_image_converter --s <Enter-Path-Of-Directory>
 
  # set a custom target image format
- python convert.py --s <Enter-Path-Of-Directory> --ext '.png'
+ raw_image_converter --s <Enter-Path-Of-Directory> --ext '.png'
 ```
 - The --s argument is where you set the path to the directory you want to convert! 
 - The --ext argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
@@ -44,5 +54,5 @@ The application will create a folder 'converted' where all your converted images
 And you are done! 
 
 ## ScreenShot
-<img src='sample.png' alt='Python Image Converter'>
+<img src='https://raw.githubusercontent.com/achimoraites/Python-Image-Converter/master/sample.png' alt='Python Image Converter'>
 
