@@ -17,10 +17,10 @@ directory = "converted"
 
 
 # create a message function
-def message(file, bool):
+def message(file, converted):
     screenLock.acquire()
     # if is converted
-    if bool:
+    if converted:
         print(datetime.now().time().strftime('%H:%M:%S') + " Converted:  " + file)
     else:
         print(datetime.now().time().strftime('%H:%M:%S') + " Converting:  " + file)
@@ -30,7 +30,6 @@ def message(file, bool):
 # create a directory if needed to store our converted images!
 if not os.path.exists(directory):
     os.makedirs(directory)
-
 
 
 # convert RAW images function
@@ -49,16 +48,17 @@ def convert_raw(file, directory, tgtDir, extension=".jpg"):
 
 
 # convert function
-def convert_file(file, directory, tgtDir):
+def convert_file(file, directory, tgtDir, extension=".jpg"):
+    mappings = {
+        '.jpg': 'JPEG',
+        '.png': 'PNG',
+    }
+    save_format = mappings.get(extension, 'JPEG')
     try:
         message(file, False)
         path = os.path.join(tgtDir, file)
         im = Image.open(path)
-        # basewidth = 2048
-        # wpercent = (basewidth/float(im.size[0]))
-        # hsize = int((float(im.size[1])*float(wpercent)))
-        # im = im.resize((basewidth,hsize), Image.ANTIALIAS)
-        im.save(os.path.join(directory, file + ".jpg"), "JPEG", dpi=(600, 600))
+        im.save(os.path.join(directory, file + extension), save_format, dpi=(600, 600))
         message(file, True)
 
     except:
@@ -85,13 +85,13 @@ def image_not_exists(e):
 
 
 # here we check each file to decide what to do		
-def checkExtension(ext):
+def check_extension(ext):
     # set supported raw conversion extensions!
     extensionsForRawConversion = ['.dng', '.raw', '.cr2', '.crw', '.erf', '.raf', '.tif', '.kdc', '.dcr', '.mos',
                                   '.mef', '.nef', '.orf', '.rw2', '.pef', '.x3f', '.srw', '.srf', '.sr2', '.arw',
                                   '.mdc', '.mrw']
     # set supported imageio conversion extensions
-    extensionsForConversion = ['.ppm', '.psd', '.tif']
+    extensionsForConversion = ['.ppm', '.psd', '.tif', '.webp']
 
     for i in extensionsForRawConversion:
         if ext.lower().endswith(i):
@@ -107,19 +107,20 @@ def checkExtension(ext):
 def main():
     print('### PYTHON IMAGE CONVERTER ### \n \n')
 
-    parser = optparse.OptionParser("usage: " + sys.argv[0] + \
-                                   "\n-s <source directory> \n ex: usage%prog -s C:\\Users\\USerName\\Desktop\\Photos_Dir \n After -s Specify the directory you will convert")
-    parser.add_option('--s', dest='nname', type='string', \
-                      help='specify your source directory!')
-    parser.add_option('--ext', dest='target_image_extension', type='choice', \
-                      default=".jpg", choices = ['.jpg', '.png'], help='the image format to be used for the converted images.')
+    parser = optparse.OptionParser("usage: " + sys.argv[0] +
+                                   "\n-s <source directory> \n ex: usage%prog --s "
+                                   "C:\\Users\\USerName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
+                                   "will convert")
+    parser.add_option('--s', dest='nname', type='string', help='specify your source directory!')
+    parser.add_option('--ext', dest='target_image_extension', type='choice',
+                      default=".jpg", choices=['.jpg', '.png'],
+                      help='the image format to be used for the converted images.')
     (options, args) = parser.parse_args()
-    if (options.nname == None):
+    if options.nname is None:
         print(parser.usage)
         exit(0)
     else:
         tgtDir = os.path.abspath(options.nname)
-
 
     print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
     print("Converting \n -> " + tgtDir + " Directory !\n")
@@ -129,21 +130,20 @@ def main():
         for file in os.listdir(tgtDir):
             # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
             if image_not_exists(file):
-                if 'RAW' == checkExtension(file):
-                    # Added multithreds to complete conversion faster
+                if 'RAW' == check_extension(file):
+                    # Added multithreading to complete conversion faster
                     t2 = Thread(target=convert_raw, args=(file, directory, tgtDir, options.target_image_extension))
-                    t2.start();
+                    t2.start()
 
-                if 'NOT_RAW' == checkExtension(file):
-                    t = Thread(target=convert_file, args=(file, directory, tgtDir))
-                    t.start();
-                if file.endswith('.tif'):
-                    t = Thread(target=convert_file, args=(file, directory, tgtDir))
-                    t.start();
+                if 'NOT_RAW' == check_extension(file):
+                    t = Thread(target=convert_file, args=(file, directory, tgtDir, options.target_image_extension))
+                    t.start()
+
         print(" \n Converted Images are stored at - > \n " + os.path.abspath(directory))
     except:
         print(
-            "\n The directory at : \n " + tgtDir + "  \n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! Grrrr....\n\n")
+            "\n The directory at : \n " + tgtDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
+                                                   "Grrrr....\n\n")
 
 
 if __name__ == '__main__':
