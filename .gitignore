@@ -1,6 +1,7 @@
 /venv
 /images
 /converted
+/.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
