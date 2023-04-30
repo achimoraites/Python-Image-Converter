@@ -1,4 +1,6 @@
 # Python Image Converter
+[![PyPI version](https://badge.fury.io/py/raw-image-converter.svg)](https://pypi.org/project/raw-image-converter/)
+
 
 ## This is a simple Image converter written in Python
 The app is using PIL ,rawpy and imageio . 
