@@ -35,10 +35,6 @@ if not os.path.exists(directory):
 # convert RAW images function
 def convert_raw(file, directory, tgtDir, extension=".jpg"):
     # path = 'image.nef'
-    print(file)
-    print(directory)
-    print(tgtDir)
-
     try:
         ext = "."+file.split(".")[-1].lower()
         message(file, False)
@@ -93,7 +89,6 @@ def image_not_exists(e):
 def check_extension(file):
     # get the extension as a String and check if the string is contained in the array extensionsForRawConversion
     ext = "."+file.split(".")[-1].lower()
-    print(ext)
     # set supported raw conversion extensions!
     extensionsForRawConversion = ['.dng', '.raw', '.cr2', '.crw', '.erf', '.raf', '.tif', '.kdc', '.dcr', '.mos',
                                   '.mef', '.nef', '.orf', '.rw2', '.pef', '.x3f', '.srw', '.srf', '.sr2', '.arw',
