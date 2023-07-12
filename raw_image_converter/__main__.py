@@ -35,13 +35,17 @@ if not os.path.exists(directory):
 # convert RAW images function
 def convert_raw(file, directory, tgtDir, extension=".jpg"):
     # path = 'image.nef'
+    print(file)
+    print(directory)
+    print(tgtDir)
 
     try:
+        ext = "."+file.split(".")[-1].lower()
         message(file, False)
         path = os.path.join(tgtDir, file)
         with rawpy.imread(path) as raw:
             rgb = raw.postprocess()
-        imageio.imsave(os.path.join(directory, file + extension), rgb)
+        imageio.imsave(os.path.join(directory, file.replace(ext,"") + extension), rgb)
         message(file, True)
     except:
         pass
@@ -49,26 +53,27 @@ def convert_raw(file, directory, tgtDir, extension=".jpg"):
 
 # convert function
 def convert_file(file, directory, tgtDir, extension=".jpg"):
+
     mappings = {
         '.jpg': 'JPEG',
         '.png': 'PNG',
     }
     save_format = mappings.get(extension, 'JPEG')
     try:
+        ext = "."+file.split(".")[-1].lower()
         message(file, False)
         path = os.path.join(tgtDir, file)
         im = Image.open(path)
-        im.save(os.path.join(directory, file + extension), save_format, dpi=(600, 600))
+        im.save(os.path.join(directory, file.replace(ext,"") + extension), save_format)
         message(file, True)
-
     except:
         pass
 
 
 # rename .ai 2 pdf and problem solved! 
-def ai_2_pdf(e):
+def ai_2_pdf(file):
     if e.endswith('.ai'):
-        os.rename(e, os.path.join(directory, e + '.pdf'))
+        os.rename(file, os.path.join(directory, file + '.pdf'))
         print(
             datetime.now().time().strftime('%H:%M:%S') + " Converted ai 2 pdf : " + os.path.join(directory, e + '.pdf'))
 
@@ -85,7 +90,10 @@ def image_not_exists(e):
 
 
 # here we check each file to decide what to do		
-def check_extension(ext):
+def check_extension(file):
+    # get the extension as a String and check if the string is contained in the array extensionsForRawConversion
+    ext = "."+file.split(".")[-1].lower()
+    print(ext)
     # set supported raw conversion extensions!
     extensionsForRawConversion = ['.dng', '.raw', '.cr2', '.crw', '.erf', '.raf', '.tif', '.kdc', '.dcr', '.mos',
                                   '.mef', '.nef', '.orf', '.rw2', '.pef', '.x3f', '.srw', '.srf', '.sr2', '.arw',
@@ -93,15 +101,12 @@ def check_extension(ext):
     # set supported imageio conversion extensions
     extensionsForConversion = ['.ppm', '.psd', '.tif', '.webp']
 
-    for i in extensionsForRawConversion:
-        if ext.lower().endswith(i):
-            return 'RAW'
-
-    for e in extensionsForConversion:
-        if ext.lower().endswith(e):
-            return 'NOT_RAW'
+    if ext in extensionsForRawConversion:
+        return "RAW"
+    if ext in extensionsForConversion:
+        return "NOT RAW"
     # check if an .ai exists and rename it to .pdf	!
-    ai_2_pdf(ext)
+    ai_2_pdf(file)
 
 
 def main():
