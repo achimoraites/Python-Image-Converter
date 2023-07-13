@@ -36,7 +36,8 @@ def main():
         print(parser.usage)
         exit(0)
     else:
-        tgtDir = os.path.abspath(options.nname)
+        srcDir = os.path.abspath(args.src_dir)
+        tgtDir = os.path.abspath(args.tgt_dir)
 
     print(
         "Started conversion at : " + datetime.now().time().strftime("%H:%M:%S") + "\n"
