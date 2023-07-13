@@ -109,14 +109,6 @@ def check_extension(file):
 def main():
     print('### PYTHON IMAGE CONVERTER ### \n \n')
 
-    #parser = optparse.OptionParser("usage: " + sys.argv[0] +
-     #                              "\n--src <source directory>"
-      #                             "\n[--tgt <target directory>]"
-       #                            "\n[--ext <converted images extension>]"
-        #                            "\n ex: usage%prog --s "
-         #                          "C:\\Users\\UserName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
-          #                         "will convert")
-
     parser = argparse.ArgumentParser(description="Convert images to JPG")
     parser.add_argument('-s', "--src", dest = "src_dir",help='specify the source directory!', required=True) # this argument is required to start the conversion
     parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
@@ -124,10 +116,8 @@ def main():
                       help='the image format to be used for the converted images.')
 
     args = parser.parse_args()
-    print (args.tgt_dir)
 
     if args.tgt_dir == None:
-        print("set tgtdir")
         srcDir = args.src_dir
         tgtDir = args.src_dir
     else:
