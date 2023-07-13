@@ -2,39 +2,24 @@ from datetime import datetime
 import os
 import sys
 from raw_image_converter.utils import check_extension, convert_file, convert_raw, image_not_exists
-import optparse
+import argparse
 import concurrent.futures
 
 
 def main():
-    # where to save our images
-    directory = "converted"
-    # create a directory if needed to store our converted images!
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    print('### PYTHON IMAGE CONVERTER ### \n \n')
 
-    print("### PYTHON IMAGE CONVERTER ### \n \n")
+    parser = argparse.ArgumentParser(description="Convert images to JPG")
+    parser.add_argument('-s', "--src", dest = "src_dir",help='specify the source directory!', required=True) # this argument is required to start the conversion
+    parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
+    parser.add_argument('-e',"--ext", dest = "ext", default=".jpg", choices=['.jpg', '.png'],
+                      help='the image format to be used for the converted images.')
 
-    parser = optparse.OptionParser(
-        "usage: " + sys.argv[0] + "\n-s <source directory> \n ex: usage%prog --s "
-        "C:\\Users\\USerName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
-        "will convert"
-    )
-    parser.add_option(
-        "--s", dest="nname", type="string", help="specify your source directory!"
-    )
-    parser.add_option(
-        "--ext",
-        dest="target_image_extension",
-        type="choice",
-        default=".jpg",
-        choices=[".jpg", ".png"],
-        help="the image format to be used for the converted images.",
-    )
-    (options, args) = parser.parse_args()
-    if options.nname is None:
-        print(parser.usage)
-        exit(0)
+    args = parser.parse_args()
+
+    if args.tgt_dir == None:
+        srcDir = args.src_dir
+        tgtDir = args.src_dir
     else:
         srcDir = os.path.abspath(args.src_dir)
         tgtDir = os.path.abspath(args.tgt_dir)
