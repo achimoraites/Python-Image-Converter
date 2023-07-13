@@ -5,7 +5,9 @@ from threading import *
 import rawpy
 import imageio
 from datetime import datetime
-import optparse
+import argparse
+
+#TODO use the extension argument of the command everywhere
 
 # All images are converted to jpg
 
@@ -33,22 +35,22 @@ if not os.path.exists(directory):
 
 
 # convert RAW images function
-def convert_raw(file, directory, tgtDir, extension=".jpg"):
+def convert_raw(file, srcDir, tgtDir, extension=".jpg"):
     # path = 'image.nef'
     try:
         ext = "."+file.split(".")[-1].lower()
         message(file, False)
-        path = os.path.join(tgtDir, file)
-        with rawpy.imread(path) as raw:
+        source = os.path.join(srcDir, file)
+        with rawpy.imread(source) as raw:
             rgb = raw.postprocess()
-        imageio.imsave(os.path.join(directory, file.replace(ext,"") + extension), rgb)
+        imageio.imsave(os.path.join(tgtDir, file.replace(ext,"") + extension), rgb)
         message(file, True)
     except:
         pass
 
 
 # convert function
-def convert_file(file, directory, tgtDir, extension=".jpg"):
+def convert_file(file, srcDir, tgtDir, extension=".jpg"):
 
     mappings = {
         '.jpg': 'JPEG',
@@ -58,9 +60,9 @@ def convert_file(file, directory, tgtDir, extension=".jpg"):
     try:
         ext = "."+file.split(".")[-1].lower()
         message(file, False)
-        path = os.path.join(tgtDir, file)
+        path = os.path.join(srcDir, file)
         im = Image.open(path)
-        im.save(os.path.join(directory, file.replace(ext,"") + extension), save_format)
+        im.save(os.path.join(tgtDir, file.replace(ext,"") + extension), save_format)
         message(file, True)
     except:
         pass
@@ -68,10 +70,10 @@ def convert_file(file, directory, tgtDir, extension=".jpg"):
 
 # rename .ai 2 pdf and problem solved! 
 def ai_2_pdf(file):
-    if e.endswith('.ai'):
+    if file.endswith('.ai'):
         os.rename(file, os.path.join(directory, file + '.pdf'))
         print(
-            datetime.now().time().strftime('%H:%M:%S') + " Converted ai 2 pdf : " + os.path.join(directory, e + '.pdf'))
+            datetime.now().time().strftime('%H:%M:%S') + " Converted ai 2 pdf : " + os.path.join(directory, file + '.pdf'))
 
 
 # IT IS POINTLESS TO CONVERT WHAT IS ALREADY CONVERTED!!!!
@@ -107,44 +109,54 @@ def check_extension(file):
 def main():
     print('### PYTHON IMAGE CONVERTER ### \n \n')
 
-    parser = optparse.OptionParser("usage: " + sys.argv[0] +
-                                   "\n-s <source directory> \n ex: usage%prog --s "
-                                   "C:\\Users\\USerName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
-                                   "will convert")
-    parser.add_option('--s', dest='nname', type='string', help='specify your source directory!')
-    parser.add_option('--ext', dest='target_image_extension', type='choice',
-                      default=".jpg", choices=['.jpg', '.png'],
+    #parser = optparse.OptionParser("usage: " + sys.argv[0] +
+     #                              "\n--src <source directory>"
+      #                             "\n[--tgt <target directory>]"
+       #                            "\n[--ext <converted images extension>]"
+        #                            "\n ex: usage%prog --s "
+         #                          "C:\\Users\\UserName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
+          #                         "will convert")
+
+    parser = argparse.ArgumentParser(description="Convert images to JPG")
+    parser.add_argument('-s', "--src", dest = "src_dir",help='specify the source directory!', required=True) # this argument is required to start the conversion
+    parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
+    parser.add_argument('-e',"--ext", dest = "ext", default=".jpg", choices=['.jpg', '.png'],
                       help='the image format to be used for the converted images.')
-    (options, args) = parser.parse_args()
-    if options.nname is None:
-        print(parser.usage)
-        exit(0)
+
+    args = parser.parse_args()
+    print (args.tgt_dir)
+
+    if args.tgt_dir == None:
+        print("set tgtdir")
+        srcDir = args.src_dir
+        tgtDir = args.src_dir
     else:
-        tgtDir = os.path.abspath(options.nname)
+        srcDir = os.path.abspath(args.src_dir)
+        tgtDir = os.path.abspath(args.tgt_dir)
 
     print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
     print("Converting \n -> " + tgtDir + " Directory !\n")
     # find files to convert
-    try:
-
-        for file in os.listdir(tgtDir):
+        
+    for file in os.listdir(srcDir):
+        try: 
             # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
+            #TODO also use the extension from the command as a parameter to the image_not_exists function
             if image_not_exists(file):
                 if 'RAW' == check_extension(file):
                     # Added multithreading to complete conversion faster
-                    t2 = Thread(target=convert_raw, args=(file, directory, tgtDir, options.target_image_extension))
+                    t2 = Thread(target=convert_raw, args=(file, srcDir, tgtDir, args.ext))
                     t2.start()
 
                 if 'NOT_RAW' == check_extension(file):
-                    t = Thread(target=convert_file, args=(file, directory, tgtDir, options.target_image_extension))
+                    t = Thread(target=convert_file, args=(file, srcDir, tgtDir, args.ext))
                     t.start()
-
-        print(" \n Converted Images are stored at - > \n " + os.path.abspath(directory))
-    except:
-        print(
-            "\n The directory at : \n " + tgtDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
+        
+        except:
+            print(
+            "\n The directory at : \n " + srcDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
                                                    "Grrrr....\n\n")
-
+    print(" \n Converted Images are stored at - > " + os.path.abspath(tgtDir))   
 
 if __name__ == '__main__':
     main()
