@@ -77,10 +77,12 @@ def ai_2_pdf(file):
 
 
 # IT IS POINTLESS TO CONVERT WHAT IS ALREADY CONVERTED!!!!
-def image_not_exists(e):
-    if os.path.isfile(os.path.join(directory, e + '.jpg')):
+def image_not_exists(image,tgtDir):
+    ext = image.split(".")[-1].lower()
+    target = os.path.join(tgtDir, image.replace(ext, 'jpg'))
+    if os.path.isfile(target):
         screenLock.acquire()
-        print("File " + e + " is already converted! \n")
+        print("File " + image + " is already converted! \n")
         screenLock.release()
         return False
     else:
@@ -114,25 +116,38 @@ def main():
     parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
     parser.add_argument('-e',"--ext", dest = "ext", default=".jpg", choices=['.jpg', '.png'],
                       help='the image format to be used for the converted images.')
-
+    parser.add_argument("-f","--folder", dest = "seperate_folder", default=False, help="should the converted images be placed in a seperate folder")
     args = parser.parse_args()
-
+    
     if args.tgt_dir == None:
-        srcDir = args.src_dir
-        tgtDir = args.src_dir
+        if args.seperate_folder:
+            if not os.path.exists(args.src_dir + "/" + directory):
+                os.makedirs(args.src_dir + "/" + directory)
+            srcDir = args.src_dir
+            tgtDir = args.src_dir + directory
+        else:
+            srcDir = args.src_dir
+            tgtDir = args.src_dir
     else:
-        srcDir = os.path.abspath(args.src_dir)
-        tgtDir = os.path.abspath(args.tgt_dir)
+        if args.seperate_folder: # if the converted files should be stored in a seperate folder, create the folder and add the images to the folder
+            if not os.path.exists(args.tgt_dir + "/" + directory):
+                os.makedirs(args.tgt_dir + "/" + directory)
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir + directory)
+        else: # if the converted files sould be kept in the source folder, 
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir)
+
 
     print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
-    print("Converting \n -> " + tgtDir + " Directory !\n")
+    print("Converting -> " + srcDir + " Directory !\n")
     # find files to convert
         
     for file in os.listdir(srcDir):
-        try: 
+       
             # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
             #TODO also use the extension from the command as a parameter to the image_not_exists function
-            if image_not_exists(file):
+            if image_not_exists(file, tgtDir):
                 if 'RAW' == check_extension(file):
                     # Added multithreading to complete conversion faster
                     t2 = Thread(target=convert_raw, args=(file, srcDir, tgtDir, args.ext))
@@ -142,10 +157,10 @@ def main():
                     t = Thread(target=convert_file, args=(file, srcDir, tgtDir, args.ext))
                     t.start()
         
-        except:
-            print(
-            "\n The directory at : \n " + srcDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
-                                                   "Grrrr....\n\n")
+       
+            #print(
+           # "\n The directory at : \n " + srcDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
+                                                  # "Grrrr....\n\n")
     print(" \n Converted Images are stored at - > " + os.path.abspath(tgtDir))   
 
 if __name__ == '__main__':
