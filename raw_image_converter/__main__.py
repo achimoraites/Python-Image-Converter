@@ -14,15 +14,28 @@ def main():
     parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
     parser.add_argument('-e',"--ext", dest = "ext", default=".jpg", choices=['.jpg', '.png'],
                       help='the image format to be used for the converted images.')
-
+    parser.add_argument("-f","--folder", dest = "seperate_folder", default=False, help="should the converted images be placed in a seperate folder")
     args = parser.parse_args()
-
+    
     if args.tgt_dir == None:
-        srcDir = args.src_dir
-        tgtDir = args.src_dir
+        if args.seperate_folder:
+            if not os.path.exists(args.src_dir + "/" + directory):
+                os.makedirs(args.src_dir + "/" + directory)
+            srcDir = args.src_dir
+            tgtDir = args.src_dir + directory
+        else:
+            srcDir = args.src_dir
+            tgtDir = args.src_dir
     else:
-        srcDir = os.path.abspath(args.src_dir)
-        tgtDir = os.path.abspath(args.tgt_dir)
+        if args.seperate_folder: # if the converted files should be stored in a seperate folder, create the folder and add the images to the folder
+            if not os.path.exists(args.tgt_dir + "/" + directory):
+                os.makedirs(args.tgt_dir + "/" + directory)
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir + directory)
+        else: # if the converted files sould be kept in the source folder, 
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir)
+
 
     print(
         "Started conversion at : " + datetime.now().time().strftime("%H:%M:%S") + "\n"
