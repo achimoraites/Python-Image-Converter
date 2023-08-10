@@ -1,9 +1,3 @@
-import sys
-from PIL import Image
-import os
-from threading import *
-import rawpy
-import imageio
 from datetime import datetime
 import argparse
 
@@ -17,7 +11,7 @@ screenLock = Semaphore(value=1)
 # where to save our images
 directory = "converted"
 
-
+#region move to utils.py
 # create a message function
 def message(file, converted):
     screenLock.acquire()
@@ -106,6 +100,13 @@ def check_extension(file):
         return "NOT RAW"
     # check if an .ai exists and rename it to .pdf	!
     ai_2_pdf(file)
+  #endregion
+  
+import os
+import sys
+from utils import check_extension, convert_file, convert_raw, image_not_exists
+import optparse
+import concurrent.futures
 
 
 def main():
@@ -128,6 +129,7 @@ def main():
         else:
             srcDir = args.src_dir
             tgtDir = args.src_dir
+            
     else:
         if args.seperate_folder: # if the converted files should be stored in a seperate folder, create the folder and add the images to the folder
             if not os.path.exists(args.tgt_dir + "/" + directory):
@@ -139,29 +141,44 @@ def main():
             tgtDir = os.path.abspath(args.tgt_dir)
 
 
-    print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
-    print("Converting -> " + srcDir + " Directory !\n")
+    print(
+        "Started conversion at : " + datetime.now().time().strftime("%H:%M:%S") + "\n"
+    )
+    print("Converting \n -> " + tgtDir + " Directory !\n")
     # find files to convert
-        
-    for file in os.listdir(srcDir):
-       
-            # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
-            #TODO also use the extension from the command as a parameter to the image_not_exists function
-            if image_not_exists(file, tgtDir):
-                if 'RAW' == check_extension(file):
-                    # Added multithreading to complete conversion faster
-                    t2 = Thread(target=convert_raw, args=(file, srcDir, tgtDir, args.ext))
-                    t2.start()
+    try:
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            for file in os.listdir(src):
+                # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
+                if image_not_exists(file, tgtDir):
+                    if "RAW" == check_extension(file):
+                        executor.submit(
+                            convert_raw,
+                            file,
+                            srcDir,
+                            tgtDir,
+                            options.target_image_extension,
+                        )
 
-                if 'NOT_RAW' == check_extension(file):
-                    t = Thread(target=convert_file, args=(file, srcDir, tgtDir, args.ext))
-                    t.start()
-        
-       
-            #print(
-           # "\n The directory at : \n " + srcDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
-                                                  # "Grrrr....\n\n")
-    print(" \n Converted Images are stored at - > " + os.path.abspath(tgtDir))   
+                    if "NOT_RAW" == check_extension(file):
+                        executor.submit(
+                            convert_file,
+                            file,
+                            srcDir,
+                            tgtDir,
+                            options.target_image_extension,
+                        )
 
-if __name__ == '__main__':
+        print(" \n Converted Images are stored at - > \n " + os.path.abspath(tgtDir))
+    except:
+        print(
+            "\n The directory at : \n "
+            + tgtDir
+            + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
+            "Grrrr....\n\n"
+        )
+
+
+
+if __name__ == "__main__":
     main()
