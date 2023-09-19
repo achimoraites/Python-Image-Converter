@@ -112,3 +112,9 @@ def check_extension(file):
         return "NOT RAW"
     # check if an .ai exists and rename it to .pdf	!
     ai_2_pdf(file)
+
+    for e in extensionsForConversion:
+        if ext.lower().endswith(e):
+            return 'NOT_RAW'
+    # check if an .ai exists and rename it to .pdf	!
+    ai_2_pdf(ext, directory)

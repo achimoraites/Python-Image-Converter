@@ -41,6 +41,7 @@ def main():
         else:
             srcDir = args.src_dir
             tgtDir = args.src_dir
+            
     else:
         if args.seperate_folder: # if the converted files should be stored in a seperate folder, create the folder and add the images to the folder
             if not os.path.exists(args.tgt_dir + "/" + directory):
@@ -52,37 +53,26 @@ def main():
             tgtDir = os.path.abspath(args.tgt_dir)
 
     # find files to convert
-    try:
-        with concurrent.futures.ProcessPoolExecutor() as executor: 
-            print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
-            print("Converting -> " + srcDir + " Directory !\n")  
-            for file in os.listdir(srcDir):
-                #TODO also use the extension from the command as a parameter to the image_not_exists function
-                if image_not_exists(file, tgtDir, args.ext):
-                    if 'RAW' == check_extension(file):
-                             executor.submit(
-                                convert_raw,
-                                file,
-                                srcDir,
-                                tgtDir,
-                                args.ext,
-                            )
-                            
-                    if 'NOT_RAW' == check_extension(file):
-                        executor.submit(
-                            convert_file,
-                            file,
-                            srcDir,
-                            tgtDir,
-                            args.ext,
-                        )
-                else:
-                    print(f"{Fore.GREEN}File " + file + f" is already converted!{Style.RESET_ALL}"+" \n ")
+        
+    for file in os.listdir(srcDir):
+       
+            # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
+            #TODO also use the extension from the command as a parameter to the image_not_exists function
+            if image_not_exists(file, tgtDir):
+                if 'RAW' == check_extension(file):
+                    # Added multithreading to complete conversion faster
+                    t2 = Thread(target=convert_raw, args=(file, srcDir, tgtDir, args.ext))
+                    t2.start()
 
-        print(f"{Fore.GREEN}Converted Images are stored at - > " + os.path.abspath(tgtDir)+f"{Style.RESET_ALL}")   
+                if 'NOT_RAW' == check_extension(file):
+                    t = Thread(target=convert_file, args=(file, srcDir, tgtDir, args.ext))
+                    t.start()
+        
+       
+            #print(
+           # "\n The directory at : \n " + srcDir + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
+                                                  # "Grrrr....\n\n")
+    print(" \n Converted Images are stored at - > " + os.path.abspath(tgtDir))   
 
-    except Exception as e:
-        print(f"{Fore.RED}ERROR IN APPLICATION{Style.RESET_ALL}" + e)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
