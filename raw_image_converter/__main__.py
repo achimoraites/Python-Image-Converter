@@ -1,9 +1,19 @@
 from datetime import datetime
 import os
-import sys
 from raw_image_converter.utils import check_extension, convert_file, convert_raw, image_not_exists
 import argparse
 import concurrent.futures
+from colorama import *
+#TODO use the extension argument of the command everywhere
+
+# All images are converted to jpg
+
+# where to save our images
+directory = "converted"
+
+# create a directory if needed to store our converted images!
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 
 def main():
@@ -36,44 +46,38 @@ def main():
             srcDir = os.path.abspath(args.src_dir)
             tgtDir = os.path.abspath(args.tgt_dir)
 
-
-    print(
-        "Started conversion at : " + datetime.now().time().strftime("%H:%M:%S") + "\n"
-    )
-    print("Converting \n -> " + tgtDir + " Directory !\n")
     # find files to convert
     try:
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            for file in os.listdir(tgtDir):
-                # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
-                if image_not_exists(file, directory):
-                    if "RAW" == check_extension(file, directory):
-                        executor.submit(
-                            convert_raw,
-                            file,
-                            directory,
-                            tgtDir,
-                            options.target_image_extension,
-                        )
-
-                    if "NOT_RAW" == check_extension(file, directory):
+        with concurrent.futures.ProcessPoolExecutor() as executor: 
+            print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
+            print("Converting -> " + srcDir + " Directory !\n")  
+            for file in os.listdir(srcDir):
+                #TODO also use the extension from the command as a parameter to the image_not_exists function
+                if image_not_exists(file, tgtDir, args.ext):
+                    if 'RAW' == check_extension(file):
+                             executor.submit(
+                                convert_raw,
+                                file,
+                                srcDir,
+                                tgtDir,
+                                args.ext,
+                            )
+                            
+                    if 'NOT_RAW' == check_extension(file):
                         executor.submit(
                             convert_file,
                             file,
-                            directory,
+                            srcDir,
                             tgtDir,
-                            options.target_image_extension,
+                            args.ext,
                         )
+                else:
+                    print(f"{Fore.GREEN}File " + file + f" is already converted!{Style.RESET_ALL}"+" \n ")
 
-        print(" \n Converted Images are stored at - > \n " + os.path.abspath(directory))
-    except:
-        print(
-            "\n The directory at : \n "
-            + tgtDir
-            + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
-            "Grrrr....\n\n"
-        )
+        print(f"{Fore.GREEN}Converted Images are stored at - > " + os.path.abspath(tgtDir)+f"{Style.RESET_ALL}")   
 
+    except Exception as e:
+        print(f"{Fore.RED}ERROR IN APPLICATION{Style.RESET_ALL}" + e)
 
 if __name__ == "__main__":
     main()
