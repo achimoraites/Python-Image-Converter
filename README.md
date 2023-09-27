@@ -35,7 +35,7 @@ In that case using an virtual environment is recommended
 
  pip install -r requirements.txt
 
- raw_image_converter --s <Enter-Path-Of-Directory>
+ python -m raw_image_converter --s <Enter-Path-Of-Directory>
 ```
 ## Example usage
 
