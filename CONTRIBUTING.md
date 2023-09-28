@@ -25,7 +25,7 @@ By participating in this project, you are expected to uphold our [Code of Conduc
 
 ## How to Contribute
 
-### This our the contribution workflow
+### This is our contribution workflow
 
 1. Find an issue to work on, or propose a new feature by creating a new issue.
 2. Discuss the issue with the maintainers to ensure it’s a good fit for the project.
