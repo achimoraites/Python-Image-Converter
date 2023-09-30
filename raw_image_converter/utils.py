@@ -1,4 +1,3 @@
-import sys
 from PIL import Image
 import os
 import rawpy
@@ -56,11 +55,11 @@ def convert_file(file, srcDir, tgtDir, extension=".jpg"):
 # rename .ai 2 pdf and problem solved!
 def ai_2_pdf(file):
     if file.endswith(".ai"):
-        os.rename(file, os.path.join(directory, file + ".pdf"))
+        os.rename(file, os.path.join(file + ".pdf"))
         print(
             datetime.now().time().strftime("%H:%M:%S")
             + " Converted ai 2 pdf : "
-            + os.path.join(directory, file + ".pdf")
+            + os.path.join(file + ".pdf")
         )
 
 
