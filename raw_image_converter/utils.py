@@ -3,7 +3,7 @@ import os
 import rawpy
 import imageio
 from datetime import datetime
-
+import shutil
 
 def message(file, converted):
     # if conversion finished
@@ -111,3 +111,11 @@ def check_extension(file):
         return "NOT RAW"
     # check if an .ai exists and rename it to .pdf	!
     ai_2_pdf(file)
+
+
+def delete_directory(dir):
+    try:
+        shutil.rmtree(dir)
+        print(f"Removed source directory {dir}")
+    except OSError as o:
+        print(f"Error, {o.strerror}: {dir}")

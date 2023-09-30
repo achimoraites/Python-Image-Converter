@@ -46,8 +46,10 @@ In that case using an virtual environment is recommended
  # set a custom target image format
  raw_image_converter --s <Enter-Path-Of-Directory> --ext '.png'
 ```
-- The --s argument is where you set the path to the directory you want to convert! 
-- The --ext argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
+- The `-s` argument is where you set the path to the directory you want to convert! 
+- You can specify where to store the converted images using the `-t` argument (target) by default they are stored in the "converted" folder. 
+- Use `--delete-source-directory` to delete the directory with the original images (source) 
+- The `--ext` argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
     - `.jpg`
     - `.png`
 
