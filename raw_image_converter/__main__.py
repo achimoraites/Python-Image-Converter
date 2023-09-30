@@ -1,80 +1,83 @@
 from datetime import datetime
 import os
-import sys
 from raw_image_converter.utils import check_extension, convert_file, convert_raw, image_not_exists
-import optparse
+import argparse
 import concurrent.futures
+from colorama import *
+#TODO use the extension argument of the command everywhere
+
+# All images are converted to jpg
+
+# where to save our images
+directory = "converted"
+
+# create a directory if needed to store our converted images!
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 
 def main():
-    # where to save our images
-    directory = "converted"
-    # create a directory if needed to store our converted images!
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    print('### PYTHON IMAGE CONVERTER ### \n \n')
 
-    print("### PYTHON IMAGE CONVERTER ### \n \n")
-
-    parser = optparse.OptionParser(
-        "usage: " + sys.argv[0] + "\n-s <source directory> \n ex: usage%prog --s "
-        "C:\\Users\\USerName\\Desktop\\Photos_Dir \n After --s Specify the directory you "
-        "will convert"
-    )
-    parser.add_option(
-        "--s", dest="nname", type="string", help="specify your source directory!"
-    )
-    parser.add_option(
-        "--ext",
-        dest="target_image_extension",
-        type="choice",
-        default=".jpg",
-        choices=[".jpg", ".png"],
-        help="the image format to be used for the converted images.",
-    )
-    (options, args) = parser.parse_args()
-    if options.nname is None:
-        print(parser.usage)
-        exit(0)
+    parser = argparse.ArgumentParser(description="Convert images to JPG")
+    parser.add_argument('-s', "--src", dest = "src_dir",help='specify the source directory!', required=True) # this argument is required to start the conversion
+    parser.add_argument("-t","--tgt", dest = "tgt_dir", help="specify the target directory!") # if there is no target directory given, the script will store the converted images in the source folder
+    parser.add_argument('-e',"--ext", dest = "ext", default=".jpg", choices=['.jpg', '.png'],
+                      help='the image format to be used for the converted images.')
+    parser.add_argument("-f","--folder", dest = "seperate_folder", default=False, help="should the converted images be placed in a seperate folder")
+    args = parser.parse_args()
+    
+    if args.tgt_dir == None:
+        if args.seperate_folder:
+            if not os.path.exists(args.src_dir + "/" + directory):
+                os.makedirs(args.src_dir + "/" + directory)
+            srcDir = args.src_dir
+            tgtDir = args.src_dir + directory
+        else:
+            srcDir = args.src_dir
+            tgtDir = args.src_dir
     else:
-        tgtDir = os.path.abspath(options.nname)
+        if args.seperate_folder: # if the converted files should be stored in a seperate folder, create the folder and add the images to the folder
+            if not os.path.exists(args.tgt_dir + "/" + directory):
+                os.makedirs(args.tgt_dir + "/" + directory)
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir + directory)
+        else: # if the converted files sould be kept in the source folder, 
+            srcDir = os.path.abspath(args.src_dir)
+            tgtDir = os.path.abspath(args.tgt_dir)
 
-    print(
-        "Started conversion at : " + datetime.now().time().strftime("%H:%M:%S") + "\n"
-    )
-    print("Converting \n -> " + tgtDir + " Directory !\n")
     # find files to convert
     try:
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            for file in os.listdir(tgtDir):
-                # CHECK IF WE HAVE CONVERTED THIS IMAGE! IF YES SKIP THE CONVERSIONS!
-                if image_not_exists(file, directory):
-                    if "RAW" == check_extension(file, directory):
-                        executor.submit(
-                            convert_raw,
-                            file,
-                            directory,
-                            tgtDir,
-                            options.target_image_extension,
-                        )
-
-                    if "NOT_RAW" == check_extension(file, directory):
+        with concurrent.futures.ProcessPoolExecutor() as executor: 
+            print("Started conversion at : " + datetime.now().time().strftime('%H:%M:%S') + '\n')
+            print("Converting -> " + srcDir + " Directory !\n")  
+            for file in os.listdir(srcDir):
+                #TODO also use the extension from the command as a parameter to the image_not_exists function
+                if image_not_exists(file, tgtDir, args.ext):
+                    if 'RAW' == check_extension(file):
+                             executor.submit(
+                                convert_raw,
+                                file,
+                                srcDir,
+                                tgtDir,
+                                args.ext,
+                            )
+                            
+                    if 'NOT_RAW' == check_extension(file):
                         executor.submit(
                             convert_file,
                             file,
-                            directory,
+                            srcDir,
                             tgtDir,
-                            options.target_image_extension,
+                            args.ext,
                         )
+                else:
+                    print(f"{Fore.GREEN}File " + file + f" is already converted!{Style.RESET_ALL}"+" \n ")
 
-        print(" \n Converted Images are stored at - > \n " + os.path.abspath(directory))
-    except:
-        print(
-            "\n The directory at : \n "
-            + tgtDir
-            + "\n Are you sure is there? \n I am NOT! \n It NOT EXISTS !! "
-            "Grrrr....\n\n"
-        )
+        print(f"{Fore.GREEN}Converted Images are stored at - > " + os.path.abspath(tgtDir)+f"{Style.RESET_ALL}")   
 
+    except Exception as e:
+        print(f"{Fore.RED}ERROR IN APPLICATION{Style.RESET_ALL}" + e)
 
 if __name__ == "__main__":
     main()
