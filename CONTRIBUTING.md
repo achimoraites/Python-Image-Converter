@@ -48,7 +48,12 @@ Please follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide
 
 Ensure that your code works as expected without affecting existing functionality.
 
-(We will add unit tests to the project in the near future)
+We are using pytest, the `tests` folder contains our unit tests.
+
+```bash
+# run unit tests
+pytest tests
+```
 
 ## Reporting Issues
 
