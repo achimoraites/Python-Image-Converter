@@ -5,17 +5,15 @@ import imageio
 from datetime import datetime
 import shutil
 
+
 def message(file, converted):
+    current_time = datetime.now().time().strftime("%H:%M:%S")
     # if conversion finished
     if converted:
-        print(datetime.now().time().strftime("%H:%M:%S") + " Converted:  " + file)
+        print(f"{current_time} Converted: {file}")
     # if conversion failed
     else:
-        print(
-            datetime.now().time().strftime("%H:%M:%S")
-            + " Conversion failed for File:  "
-            + file
-        )
+        print(f"{current_time} Conversion failed for File: {file}")
 
 
 # convert RAW images function
@@ -64,9 +62,9 @@ def ai_2_pdf(file):
 
 
 # IT IS POINTLESS TO CONVERT WHAT IS ALREADY CONVERTED!!!!
-def image_not_exists(image, tgtDir,tgtExt):
+def image_not_exists(image, tgtDir, tgtExt):
     ext = image.split(".")[-1].lower()
-    target = os.path.join(tgtDir, image.replace(ext, tgtExt.replace(".","")))
+    target = os.path.join(tgtDir, image.replace(ext, tgtExt.replace(".", "")))
     if os.path.isfile(target):
         return False
     else:
