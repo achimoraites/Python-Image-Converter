@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import numpy as np
 import rawpy
 import imageio
 from datetime import datetime
@@ -17,13 +18,22 @@ def message(file, converted):
 
 
 # convert RAW images function
-def convert_raw(file, srcDir, tgtDir, extension=".jpg"):
+def convert_raw(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "100%")):
     try:
         ext = "." + file.split(".")[-1].lower()
         print(datetime.now().time().strftime("%H:%M:%S") + " Converting:  " + file)
         source = os.path.join(srcDir, file)
         with rawpy.imread(source) as raw:
             rgb = raw.postprocess()
+        if resolution:
+            pil_image = Image.fromarray(rgb)
+
+            # Resize the image
+            width = calculate_image_dimension(pil_image.width, resolution[0])
+            height = calculate_image_dimension(pil_image.height, resolution[1])
+            pil_image = pil_image.resize((width, height))
+
+            rgb = np.array(pil_image)
         imageio.imsave(os.path.join(tgtDir, file.replace(ext, "") + extension), rgb)
         message(file, True)
     except Exception as e:
@@ -32,8 +42,17 @@ def convert_raw(file, srcDir, tgtDir, extension=".jpg"):
         pass
 
 
+def calculate_image_dimension(dimension, resolution):
+    if "%" in resolution:
+        factor = float(resolution.strip("%").strip()) / 100.0
+        result = int(dimension * factor)
+    else:
+        result = int(resolution)
+    return result
+
+
 # convert function
-def convert_file(file, srcDir, tgtDir, extension=".jpg"):
+def convert_file(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "100%")):
     mappings = {
         ".jpg": "JPEG",
         ".png": "PNG",
@@ -44,6 +63,10 @@ def convert_file(file, srcDir, tgtDir, extension=".jpg"):
         message(file, False)
         path = os.path.join(srcDir, file)
         im = Image.open(path)
+        if resolution:
+            width = calculate_image_dimension(im.width, resolution[0])
+            height = calculate_image_dimension(im.height, resolution[1])
+            im = im.resize((width, height))
         im.save(os.path.join(tgtDir, file.replace(ext, "") + extension), save_format)
         message(file, True)
     except:

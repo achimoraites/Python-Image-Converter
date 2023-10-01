@@ -39,21 +39,34 @@ In that case using an virtual environment is recommended
 ```
 ## Example usage
 
-```
- # simple usage
- raw_image_converter --s <Enter-Path-Of-Directory>
-
- # set a custom target image format
- raw_image_converter --s <Enter-Path-Of-Directory> --ext '.png'
-```
-- The `-s` argument is where you set the path to the directory you want to convert! 
-- You can specify where to store the converted images using the `-t` argument (target) by default they are stored in the "converted" folder. 
-- Use `--delete-source-directory` to delete the directory with the original images (source) 
-- The `--ext` argument is where you specify the image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
+### Arguments
+- `-s, --src` (required): set the path to the directory you want to convert (source)! 
+- `-t, --tgt`: where to store the converted images (target), by default they are stored in the "converted" folder. 
+- `-d, --delete-source-directory`: removes the directory with the original images (source) 
+- `-r, --resolution`: Allows to set the converted image resolutions, you can use numbers or percentages: eg 75% -> width and height are 75% of the original size, 1000,1500 sets the width to 1000px and the height to 1500px
+- `-e, --ext`: specify the converted image format that will be used for the converted images; by default the `.jpg` is used. valid options are:
     - `.jpg`
     - `.png`
 
-The application will create a folder 'converted' where all your converted images are located!
+```
+ # simple usage
+ raw_image_converter -s <Enter-Path-Of-Directory>
+
+ # set a custom target image format
+ raw_image_converter --s <Enter-Path-Of-Directory> --ext '.png'
+
+ # Advanced usage 1
+ raw_image_converter -s images -t converted/png -r 25% -e .png -d
+
+ # Set custom resolution 1
+ raw_image_converter -s images -t converted/jpg -r 1024,768
+
+ # Set custom resolution 2
+ raw_image_converter -s images -t converted/jpg -r 50%,33%
+```
+
+
+
 
 And you are done! 
 

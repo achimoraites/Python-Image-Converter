@@ -9,9 +9,12 @@ from raw_image_converter.utils import (
 )
 import argparse
 import concurrent.futures
-from colorama import *
+from colorama import Fore, Style
 
-# TODO use the extension argument of the command everywhere
+
+def tuple_type(values):
+    values = values.split(",")
+    return tuple(values)
 
 
 def main():
@@ -41,17 +44,31 @@ def main():
         help="the image format to be used for the converted images.",
     )
     parser.add_argument(
+        "-d",
         "--delete-source-directory",
         action="store_true",
         dest="delete_source_directory",
         default=False,
         help="Delete the source directory after the convesion",
     )
+    parser.add_argument(
+        "-r",
+        "--resolution",
+        type=tuple_type,
+        dest="resolution",
+        default="100%,100%",
+        help="image dimensions (width, height) as a tuple (using numbers 800,600 or using percentages 75%,75%)",
+    )
 
     args = parser.parse_args()
 
     srcDir = os.path.abspath(args.src_dir)
     tgtDir = os.path.abspath(args.tgt_dir)
+    resolution = args.resolution
+
+    # Handle one dimensional tuples
+    if len(resolution) == 1:
+        resolution = (resolution[0], resolution[0])
 
     if not os.path.exists(tgtDir):
         os.makedirs(tgtDir)
@@ -74,6 +91,7 @@ def main():
                             srcDir,
                             tgtDir,
                             args.ext,
+                            resolution,
                         )
 
                     if "NOT_RAW" == check_extension(file):
@@ -83,6 +101,7 @@ def main():
                             srcDir,
                             tgtDir,
                             args.ext,
+                            resolution,
                         )
                 else:
                     print(
