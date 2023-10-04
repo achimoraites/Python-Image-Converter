@@ -55,6 +55,8 @@ We are using pytest, the `tests` folder contains our unit tests.
 pytest tests
 ```
 
+For improving our Unit Tests we are using [codium.ai](https://www.codium.ai/) ✨
+
 ## Reporting Issues
 
 - Check if the issue has already been reported.
