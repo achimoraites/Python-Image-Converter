@@ -27,7 +27,7 @@ setup(
     keywords='cli, converter, raw, images',
     packages=["raw_image_converter"],
     install_requires=["numpy==1.22.3", "rawpy==0.17.1",
-                      "imageio==2.16.2", "Pillow==9.3.0", "colorama==0.4.6"],
+                      "imageio==2.16.2", "Pillow==10.0.1", "colorama==0.4.6"],
     entry_points={
         "console_scripts": [
             "raw_image_converter=raw_image_converter.__main__:main",
