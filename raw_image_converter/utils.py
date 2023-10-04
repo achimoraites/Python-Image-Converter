@@ -6,6 +6,8 @@ import imageio
 from datetime import datetime
 import shutil
 
+def split_file_extension(file):
+    return os.path.splitext(file)
 
 def message(file, converted):
     current_time = datetime.now().time().strftime("%H:%M:%S")
@@ -20,7 +22,7 @@ def message(file, converted):
 # convert RAW images function
 def convert_raw(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "100%")):
     try:
-        ext = "." + file.split(".")[-1].lower()
+        filename, _ = split_file_extension(file)
         print(datetime.now().time().strftime("%H:%M:%S") + " Converting:  " + file)
         source = os.path.join(srcDir, file)
         with rawpy.imread(source) as raw:
@@ -34,7 +36,7 @@ def convert_raw(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "100
             pil_image = pil_image.resize((width, height))
 
             rgb = np.array(pil_image)
-        imageio.imsave(os.path.join(tgtDir, file.replace(ext, "") + extension), rgb)
+        imageio.imsave(os.path.join(tgtDir, filename + extension), rgb)
         message(file, True)
     except Exception as e:
         print(e)
@@ -59,7 +61,7 @@ def convert_file(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "10
     }
     save_format = mappings.get(extension, "JPEG")
     try:
-        ext = "." + file.split(".")[-1].lower()
+        filename, _ = split_file_extension(file)
         message(file, False)
         path = os.path.join(srcDir, file)
         im = Image.open(path)
@@ -67,7 +69,7 @@ def convert_file(file, srcDir, tgtDir, extension=".jpg", resolution=("100%", "10
             width = calculate_image_dimension(im.width, resolution[0])
             height = calculate_image_dimension(im.height, resolution[1])
             im = im.resize((width, height))
-        im.save(os.path.join(tgtDir, file.replace(ext, "") + extension), save_format)
+        im.save(os.path.join(tgtDir, filename + extension), save_format)
         message(file, True)
     except:
         pass
@@ -86,8 +88,8 @@ def ai_2_pdf(file):
 
 # IT IS POINTLESS TO CONVERT WHAT IS ALREADY CONVERTED!!!!
 def image_not_exists(image, tgtDir, tgtExt):
-    ext = image.split(".")[-1].lower()
-    target = os.path.join(tgtDir, image.replace(ext, tgtExt.replace(".", "")))
+    filename, _ = split_file_extension(image)
+    target = os.path.join(tgtDir, filename + tgtExt)
     if os.path.isfile(target):
         return False
     else:
@@ -95,18 +97,17 @@ def image_not_exists(image, tgtDir, tgtExt):
 
 
 # here we check each file to decide what to do
-def check_extension(file):
+def check_file_type(file):
     # get the extension as a String and check if the string is contained in the array extensionsForRawConversion
-    ext = "." + file.split(".")[-1].lower()
+    _, ext = split_file_extension(file)
     # set supported raw conversion extensions!
-    extensionsForRawConversion = [
+    raw = [
         ".dng",
         ".raw",
         ".cr2",
         ".crw",
         ".erf",
         ".raf",
-        ".tif",
         ".kdc",
         ".dcr",
         ".mos",
@@ -124,11 +125,11 @@ def check_extension(file):
         ".mrw",
     ]
     # set supported imageio conversion extensions
-    extensionsForConversion = [".ppm", ".psd", ".tif", ".webp"]
+    not_raw = [".ppm", ".psd", ".tiff", ".webp"]
 
-    if ext in extensionsForRawConversion:
+    if ext in raw:
         return "RAW"
-    if ext in extensionsForConversion:
+    if ext in not_raw:
         return "NOT RAW"
     # check if an .ai exists and rename it to .pdf	!
     ai_2_pdf(file)

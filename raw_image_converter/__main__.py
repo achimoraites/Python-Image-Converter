@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from raw_image_converter.utils import (
-    check_extension,
+    check_file_type,
     convert_file,
     convert_raw,
     image_not_exists,
@@ -83,8 +83,10 @@ def main():
             )
             print("Converting -> " + srcDir + " Directory !\n")
             for file in os.listdir(srcDir):
+                file = file.lower()
                 if image_not_exists(file, tgtDir, args.ext):
-                    if "RAW" == check_extension(file):
+                    type = check_file_type(file)
+                    if "RAW" == type:
                         executor.submit(
                             convert_raw,
                             file,
@@ -94,7 +96,7 @@ def main():
                             resolution,
                         )
 
-                    if "NOT_RAW" == check_extension(file):
+                    if "NOT_RAW" == type:
                         executor.submit(
                             convert_file,
                             file,
