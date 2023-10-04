@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  pr_agent_job:
+    runs-on: ubuntu-latest
+    env:
+      github_action.auto_review: "true"
+      github_action.auto_improve: "false"
+      github_action.auto_describe: "false"
+    permissions:
+      pull-requests: write
+    name: Run pr agent on every pull request
+    steps:
+      - name: PR Agent action step
+        id: pragent
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
