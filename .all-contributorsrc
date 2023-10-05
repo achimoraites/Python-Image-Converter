@@ -7,6 +7,7 @@
   "commitType": "docs",
   "commitConvention": "angular",
   "contributorsPerLine": 7,
+  "contributorsSortAlphabetically": true,
   "contributors": [
     {
       "login": "rakovskij-stanislav",
@@ -14,7 +15,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/25303578?v=4",
       "profile": "https://blog.disasm.me/",
       "contributions": [
-        "code"
+        "code",
+        "ideas"
       ]
     },
     {
@@ -23,8 +25,56 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/78489341?v=4",
       "profile": "https://github.com/AgentSchmisch",
       "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "23198",
+      "name": "23198",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31165700?v=4",
+      "profile": "https://github.com/23198",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "felixjchen",
+      "name": "felixjchen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31393977?v=4",
+      "profile": "https://github.com/felixjchen",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "papsphilip",
+      "name": "Filippos Pappas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27963785?v=4",
+      "profile": "https://github.com/papsphilip",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "ShadoWxShinigamI",
+      "name": "ShadoWxShinigamI",
+      "avatar_url": "https://avatars.githubusercontent.com/u/116374738?v=4",
+      "profile": "https://github.com/ShadoWxShinigamI",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "achimoraites",
+      "name": "Achilles Moraites",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4193340?v=4",
+      "profile": "https://achimoraites.io/",
+      "contributions": [
+        "ideas",
         "code"
       ]
     }
-  ]
+  ],
+  "repoType": "github"
 }
