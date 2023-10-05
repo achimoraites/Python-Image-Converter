@@ -68,6 +68,13 @@ And you are done!
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/AgentSchmisch"><img src="https://avatars.githubusercontent.com/u/78489341?v=4?s=100" width="100px;" alt="Florian Schmid"/><br /><sub><b>Florian Schmid</b></sub></a><br /><a href="#code-AgentSchmisch" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
