@@ -9,6 +9,15 @@
   "contributorsPerLine": 7,
   "contributors": [
     {
+      "login": "rakovskij-stanislav",
+      "name": "Rakovskij Stanislav",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25303578?v=4",
+      "profile": "https://blog.disasm.me/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "AgentSchmisch",
       "name": "Florian Schmid",
       "avatar_url": "https://avatars.githubusercontent.com/u/78489341?v=4",
