@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+from raw_image_converter import __version__
 from raw_image_converter.utils import (
     check_file_type,
     convert_file,
@@ -18,7 +19,7 @@ def tuple_type(values):
 
 
 def main():
-    print("### PYTHON IMAGE CONVERTER ### \n \n")
+    print(f"### PYTHON IMAGE CONVERTER {__version__} ### \n \n")
 
     parser = argparse.ArgumentParser(description="Convert images to JPG/PNG")
     parser.add_argument(
