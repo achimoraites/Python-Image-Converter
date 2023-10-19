@@ -2,8 +2,12 @@
 [![PyPI version](https://badge.fury.io/py/raw-image-converter.svg)](https://pypi.org/project/raw-image-converter/)
 [![All Contributors](https://img.shields.io/github/all-contributors/achimoraites/Python-Image-Converter?color=ee8449&style=flat-square)](#contributors)
 
-
 The Python Image Converter is a user-friendly CLI tool designed for hassle-free batch conversion of image files.
+
+Once upon a time, converting multiple images came with either slow, tedious processes or even paid tools. 
+Not anymore!
+
+This open-source image converter can empower anyone, from busy image professionals to individuals passionate about photography.
 
 ## Features
 - **Bulk Conversion:** Say goodbye to the tedious one-by-one image conversion. Convert hundreds of images at once.
