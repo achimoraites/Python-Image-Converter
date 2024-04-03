@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="raw-image-converter",
-    version="1.1.1",
+    version="1.1.2",
     description="Batch conversions of raw images",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -26,8 +26,8 @@ setup(
     ],
     keywords='cli, converter, raw, images',
     packages=["raw_image_converter"],
-    install_requires=["numpy==1.22.3", "rawpy==0.17.1",
-                      "imageio==2.16.2", "Pillow==10.0.1", "colorama==0.4.6"],
+    install_requires=["numpy==1.26.4", "rawpy==0.19.1",
+                      "imageio==2.16.2", "Pillow==10.3.0", "colorama==0.4.6"],
     entry_points={
         "console_scripts": [
             "raw_image_converter=raw_image_converter.__main__:main",

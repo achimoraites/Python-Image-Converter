@@ -5,4 +5,4 @@ See https://github.com/achimoraites/Python-Image-Converter for more info.
 """
 
 # Version of the package
-__version__ = "1.1.1"
+__version__ = "1.1.2"
