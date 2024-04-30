@@ -28,7 +28,8 @@ $ pip3 install raw_image_converter
  git clone https://github.com/achimoraites/Python-Image-Converter.git [my-app-name]
  cd [my-app-name]
 
- pip install -r requirements.txt
+poetry install
+poetry shell
 
  python -m raw_image_converter --s <Enter-Path-Of-Directory>
 ```

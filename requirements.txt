@@ -1,5 +1,0 @@
-imageio==2.16.2
-Pillow==10.3.0
-rawpy==0.19.1
-numpy==1.26.4
-colorama==0.4.6
